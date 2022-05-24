@@ -1,10 +1,58 @@
+from gettext import find
 import requests
 from bs4 import BeautifulSoup as Soup
+import pandas as pd
 
-webpage_response = requests.get('https://www.purehockey.com/c/ice-hockey-skates-senior?')
+webpage_response = requests.get('http://www.herbsbar.com/live-music-calendar-1')
 
 webpage = (webpage_response.content)
 parser = Soup(webpage, 'html.parser')
+
+for herbs_music in parser.find_all("article", {"class": "eventlist-event eventlist-event--upcoming eventlist-event--multiday"}):
+
+    herbs_band_names = herbs_music.find_all('a', {'class':'eventlist-title-link'})
+    herbs_band_names_text = herbs_band_names[0].text.strip()
+
+    herbs_dates = herbs_music.find_all('time', {'class':'event-date'})
+    herbs_dates_text = herbs_dates[0].text.strip()
+
+    herbs_times = herbs_music.find_all('time', {'class':'event-time-12hr'})
+    herbs_times_text = herbs_times[0].text.strip()
+
+    herbs_info = {'Band Name': [herbs_band_names_text], 'Date': [herbs_dates_text], 'Time': [herbs_times_text]}
+    # 
+    #
+    # 
+    #  df = pd.DataFrame(herbs_info, columns=('Band Name', 'Date', 'Time'))
+    # print (df)
+
+
+
+    # herbs_info = {'Band Name': [herbs_band_names_text], 'Date': [herbs_dates_text], 'Time': [herbs_times_text]}
+    # df = pd.DataFrame(herbs_info, columns=('Band Name', 'Date', 'Time'))
+    # print (df)
+
+    # print (herbs_band_names_text)
+    # print (herbs_dates_text)
+    # print (herbs_times_text)
+
+# carl = ('carl')
+
+# data = {'Name': ['Ankit', herbs_band_names_text, 'Aishwarya', 'Priyanka'],
+#                 'Age': [21, 19, 20, 18],
+#                 'Stream': ['Math', 'Commerce', 'Arts', 'Biology'],
+#                 'Percentage': [88, 92, 95, 70]}
+
+# musicinfo = {'debbie kills dallas', '5/20', '5:30pm'}
+
+# df = pd.DataFrame(data, columns=('Name', 'Age', 'Stream'))
+# print (df)
+
+
+# herbsinfo = parser.find_all("div", {"class": "eventlist eventlist--upcoming"})
+# herbsinfotext = herbsinfo[0].text
+# print (herbsinfotext)
+
 
 # finding = soup.find('a')
 
@@ -47,27 +95,26 @@ parser = Soup(webpage, 'html.parser')
 
 #     f.write(gearnametext + "," + gearpricetext)
 
+##### Working as intended!
+# filename = "gear1.csv"
+# headers = "Gear,Price\n"
 
-filename = "gear1.csv"
-headers = "Gear,Price\n"
 
-
-with open(filename, 'w') as f:
-    f.write(headers)
+# with open(filename, 'w') as f:
+#     f.write(headers)
     
-    for gear in parser.find_all("div", {"class": "details"}):
+#     for gear in parser.find_all("div", {"class": "details"}):
 
-        gearname = gear.find_all("div", {"class": "name"})
-        gearnametext = gearname[0].text.strip()
+#         gearname = gear.find_all("div", {"class": "name"})
+#         gearnametext = gearname[0].text.strip()
         
-        gearprice = gear.find_all("div", {"class": "price"})
-        gearpricetext = gearprice[0].text.strip()
+#         gearprice = gear.find_all("div", {"class": "price"})
+#         gearpricetext = gearprice[0].text.strip()
 
-        print (gearnametext)
-        print (gearpricetext)
+#         print (gearnametext)
+#         print (gearpricetext)
 
-        f.write(gearnametext + "," + gearpricetext + "\n")
-
+#         f.write(gearnametext + "," + gearpricetext + "\n")
 
 
 # print (findingitall)
