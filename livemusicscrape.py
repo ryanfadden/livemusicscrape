@@ -8,19 +8,28 @@ webpage_response = requests.get('http://www.herbsbar.com/live-music-calendar-1')
 webpage = (webpage_response.content)
 parser = Soup(webpage, 'html.parser')
 
-for herbs_music in parser.find_all("article", {"class": "eventlist-event eventlist-event--upcoming eventlist-event--multiday"}):
+# for herbs_music in parser.find_all("article", {"class": "eventlist-event eventlist-event--upcoming eventlist-event--multiday"}):
 
-    herbs_band_names = herbs_music.find_all('a', {'class':'eventlist-title-link'})
-    herbs_band_names_text = herbs_band_names[0].text.strip()
+#     herbs_band_names = herbs_music.find_all('a', {'class':'eventlist-title-link'})
+#     herbs_band_names_text = herbs_band_names[0].text.strip()
 
-    herbs_dates = herbs_music.find_all('time', {'class':'event-date'})
-    herbs_dates_text = herbs_dates[0].text.strip()
+#     herbs_dates = herbs_music.find_all('time', {'class':'event-date'})
+#     herbs_dates_text = herbs_dates[0].text.strip()
 
-    herbs_times = herbs_music.find_all('time', {'class':'event-time-12hr'})
-    herbs_times_text = herbs_times[0].text.strip()
+#     herbs_times = herbs_music.find_all('time', {'class':'event-time-12hr'})
+#     herbs_times_text = herbs_times[0].text.strip()
 
-    herbs_info = {'Band Name': [herbs_band_names_text], 'Date': [herbs_dates_text], 'Time': [herbs_times_text]}
-    # 
+#     herbs_info = {'Band Name': [herbs_band_names_text], 'Date': [herbs_dates_text], 'Time': [herbs_times_text]}
+#   
+
+rows = []
+for i in range(3):
+    rows.append([i, i + 1])
+print (rows)
+
+df = pd.DataFrame(rows, columns=["a", "b"])
+print (df)
+
     #
     # 
     #  df = pd.DataFrame(herbs_info, columns=('Band Name', 'Date', 'Time'))
