@@ -1,6 +1,9 @@
+from cgitb import html
 import requests
 from bs4 import BeautifulSoup as Soup
 import pandas as pd
+import smtplib
+from email.message import EmailMessage
 
 webpage_response = requests.get('http://www.herbsbar.com/live-music-calendar-1')
 
@@ -23,7 +26,50 @@ for herbs_music in parser.find_all("article", {"class": "eventlist-event eventli
     herbs_dict['Time'].append(herbs_times_text)
 
 df = pd.DataFrame(herbs_dict)
-print (df)
+
+msg = EmailMessage()
+msg['Subject'] = 'Band Scrape'
+msg['From'] = "ryanf.test.email@gmail.com"
+msg['To'] = "ryanfadden@gmail.com"
+msg.set_content(df.to_string())
+msg.add_alternative("<html> <body"> df.to_html() "</body> </html>")
+
+with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+
+    smtp.login('ryanf.test.email@gmail.com', 'nayrryan123')
+    smtp.send_message(msg)
+
+
+
+
+######This works for a string
+# msg = EmailMessage()
+# msg['Subject'] = 'Band Scrape'
+# msg['From'] = "ryanf.test.email@gmail.com"
+# msg['To'] = "ryanfadden@gmail.com"
+# msg.set_content('plain text email')
+# msg.add_alternative(df.to_string())
+
+# with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+
+#     smtp.login('ryanf.test.email@gmail.com', 'nayrryan123')
+#     smtp.send_message(msg)
+
+
+# server = smtplib.SMTP('smtp.gmail.com', 587)
+# server.starttls()
+# server.login('ryanf.test.email@gmail.com', 'nayrryan123')
+# server.sendmail('ryanf.test.email@gmail.com', 'ryanfadden@gmail.com', str(herbs_dict))
+# print('Mail Sent')
+
+# <!DOCTYPE html>
+# <html>
+#     <body>
+#         {df.to_html()}
+#     </body>
+# </html>
+# """, subtype='html')
+
 
 # rows = []
 # for i in range(3):
