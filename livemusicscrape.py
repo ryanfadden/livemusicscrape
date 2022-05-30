@@ -26,13 +26,14 @@ for herbs_music in parser.find_all("article", {"class": "eventlist-event eventli
     herbs_dict['Time'].append(herbs_times_text)
 
 df = pd.DataFrame(herbs_dict)
+dfhtml = ("<html><body>" + df.to_html() + "</body></html>")
 
 msg = EmailMessage()
 msg['Subject'] = 'Band Scrape'
 msg['From'] = "ryanf.test.email@gmail.com"
 msg['To'] = "ryanfadden@gmail.com"
 msg.set_content(df.to_string())
-msg.add_alternative("<html> <body"> df.to_html() "</body> </html>")
+msg.add_alternative(dfhtml, subtype='html')
 
 with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
 
