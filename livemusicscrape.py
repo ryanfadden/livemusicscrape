@@ -1,9 +1,20 @@
 from cgitb import html
+from sqlite3 import Cursor
 import requests
 from bs4 import BeautifulSoup as Soup
 import pandas as pd
 import smtplib
 from email.message import EmailMessage
+import pymysql
+
+# endpoint = 'mysql-bandscrape.cpzuexvbklch.us-east-1.rds.amazonaws.com'
+# username = 'admin'
+# password = 'nayrryan123'
+# database_name = 'test'
+
+# connection = pymysql.connect(endpoint, user=username, passwd=password, db=database_name)
+
+# def handler():
 
 webpage_response = requests.get('http://www.herbsbar.com/live-music-calendar-1')
 
