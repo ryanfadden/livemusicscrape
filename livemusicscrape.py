@@ -8,7 +8,7 @@ from email.message import EmailMessage
 import pymysql
 
 # making change
-
+# making change2
 # endpoint = 'mysql-bandscrape.cpzuexvbklch.us-east-1.rds.amazonaws.com'
 # username = 'admin'
 # password = 'nayrryan123'
