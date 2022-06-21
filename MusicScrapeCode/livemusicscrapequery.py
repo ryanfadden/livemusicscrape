@@ -36,7 +36,7 @@ cursor = connection.cursor()
 insertquery = """INSERT INTO BandInfo(Artist, Date, Time) VALUES (%s, %s, %s)"""
 records_to_insert = ([(name, date, time) for name, date, time in zip(herbs_dict['Name'], herbs_dict['Date'], herbs_dict['Time'])])
 cursor.executemany(insertquery, records_to_insert)
-connection.commit()
+# connection.commit()
 
 
 
