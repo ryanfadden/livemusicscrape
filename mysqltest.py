@@ -1,8 +1,8 @@
 # from msilib.schema import tables
 from sqlite3 import Cursor
-from venv import create
+# from venv import create
 import pymysql
-import mysql.connector
+# import mysql.connector
 
 
 endpoint = 'mysql-bandscrape.cpzuexvbklch.us-east-1.rds.amazonaws.com'
@@ -13,17 +13,28 @@ database_name = 'test'
 connection = pymysql.connect(host=endpoint, user=username, password=password, database=database_name)
 cursor = connection.cursor()
 
-cursor.execute('select * from BandInfo')
-output = cursor.fetchall()
+mac = ("cat")
+mohan = ("dog")
+june = ("cow")
+
+
+# SQLvalues = (mac, mohan, listtest1)
 
 cursor.execute("""INSERT INTO BandInfo(Artist, Date, Time)
-VALUES ('Mac', 'Mohan', 20)""")
-connection.commit()
+VALUES (%s, %s, %s)""", (mac, mohan, june)) 
 
 cursor.execute('select * from BandInfo')
 output = cursor.fetchall()
 for i in output:
     print(i)
+
+
+# # connection.commit()
+
+# cursor.execute('select * from BandInfo')
+# output = cursor.fetchall()
+# for i in output:
+#     print(i)
 
 
 
