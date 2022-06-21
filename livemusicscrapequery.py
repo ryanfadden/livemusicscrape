@@ -12,9 +12,6 @@ username = 'admin'
 password = 'nayrryan123'
 database_name = 'test'
 
-connection = pymysql.connect(host=endpoint, user=username, password=password, database=database_name)
-cursor = connection.cursor()
-
 webpage_response = requests.get('http://www.herbsbar.com/live-music-calendar-1')
 
 webpage = (webpage_response.content)
@@ -25,23 +22,41 @@ for herbs_music in parser.find_all("article", {"class": "eventlist-event eventli
 
     herbs_band_names = herbs_music.find_all('a', {'class':'eventlist-title-link'})
     herbs_band_names_text = herbs_band_names[0].text.strip()
-    # herbs_dict['Name'].append(herbs_band_names_text)
+    herbs_dict['Name'].append(herbs_band_names_text)
 
     herbs_dates = herbs_music.find_all('time', {'class':'event-date'})
     herbs_dates_text = herbs_dates[0].text.strip()
-    # herbs_dict['Date'].append(herbs_dates_text)
+    herbs_dict['Date'].append(herbs_dates_text)
 
     herbs_times = herbs_music.find_all('time', {'class':'event-time-12hr'})
     herbs_times_text = herbs_times[0].text.strip()
-    # herbs_dict['Time'].append(herbs_times_text)
+    herbs_dict['Time'].append(herbs_times_text)
 
-    cursor.execute("""INSERT INTO BandInfo(Artist, Date, Time)
-    VALUES (%s, %s, %s)""", (herbs_band_names_text, herbs_times_text, herbs_dates_text))
+connection = pymysql.connect(host=endpoint, user=username, password=password, database=database_name)
+cursor = connection.cursor()
+insertquery = """INSERT INTO BandInfo(Artist, Date, Time) VALUES (%s, %s, %s)"""
+records_to_insert = ([(name, date, time) for name, date, time in zip(herbs_dict['Name'], herbs_dict['Date'], herbs_dict['Time'])])
+cursor.executemany(insertquery, records_to_insert)
+connection.commit()
+
+
+
+
+# cursor.execute("""INSERT INTO BandInfo(Artist, Date, Time)
+#     VALUES (%s, %s, %s)""", (herbs_band_names_text, herbs_times_text, herbs_dates_text))
+
+
+
+# for names in herbs_dict['Name']:
+#     print (names)
+
+# print herbs_dict['Time']
 
 cursor.execute('select * from BandInfo')
 output = cursor.fetchall()
 for i in output:
     print(i)
+    
 
 
 # df = pd.DataFrame(herbs_dict)
