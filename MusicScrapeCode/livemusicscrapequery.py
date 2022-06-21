@@ -7,11 +7,6 @@ import smtplib
 from email.message import EmailMessage
 import pymysql
 
-endpoint = 'mysql-bandscrape.cpzuexvbklch.us-east-1.rds.amazonaws.com'
-username = 'admin'
-password = 'nayrryan123'
-database_name = 'test'
-
 webpage_response = requests.get('http://www.herbsbar.com/live-music-calendar-1')
 
 webpage = (webpage_response.content)
@@ -32,6 +27,10 @@ for herbs_music in parser.find_all("article", {"class": "eventlist-event eventli
     herbs_times_text = herbs_times[0].text.strip()
     herbs_dict['Time'].append(herbs_times_text)
 
+endpoint = 'mysql-bandscrape.cpzuexvbklch.us-east-1.rds.amazonaws.com'
+username = 'admin'
+password = 'nayrryan123'
+database_name = 'test'
 connection = pymysql.connect(host=endpoint, user=username, password=password, database=database_name)
 cursor = connection.cursor()
 insertquery = """INSERT INTO BandInfo(Artist, Date, Time) VALUES (%s, %s, %s)"""
